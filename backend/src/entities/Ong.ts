@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { v4 as uuidV4 } from 'uuid';
 
 @Entity("ongs")
@@ -15,17 +15,23 @@ class Ong {
   @Column()
   email: string;
   
-
+  @Column()
   password: string;
   
-
+  @Column()
   whatsapp: string;
   
-
+  @Column()
   city: string;
   
-
+  @Column()
   uf: string;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date
 
   constructor() {
     if(!this.id) {
