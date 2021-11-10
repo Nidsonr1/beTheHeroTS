@@ -32,6 +32,14 @@ export class CreateOng1635696146897 implements MigrationInterface {
                             type: "varchar"
                         },
                         {
+                            name: "salt",
+                            type: "varchar"
+                        },
+                        {
+                            name: "whatsapp",
+                            type: "varchar"
+                        },
+                        {
                             name: "city",
                             type: "varchar"
                         },

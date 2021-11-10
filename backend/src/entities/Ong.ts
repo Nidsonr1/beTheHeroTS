@@ -19,6 +19,9 @@ class Ong {
   password: string;
   
   @Column()
+  salt: string;
+  
+  @Column()
   whatsapp: string;
   
   @Column()
