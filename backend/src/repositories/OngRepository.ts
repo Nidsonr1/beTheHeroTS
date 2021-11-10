@@ -11,6 +11,29 @@ class OngRepository implements IOngRepository {
     this.repository = getRepository(Ong);
   }
 
+  async findByEmail(email: string): Promise<Ong> {
+    const user = await this.repository.findOne({ email });
+    return user;
+  }
+
+  async login(email: string, password: string, salt: string): Promise<Ong> {
+    const decryptPassword = await this.encryptPassword(password, salt);
+
+    const user = await this.repository.createQueryBuilder("ongs")
+    .select([
+      "ongs.id",
+      "ongs.name",
+      "ongs.description",
+      "ongs.email",
+      "whatsapp",
+      "ongs.city",
+      "ongs.uf"
+    ])
+    .where({ password: decryptPassword })
+    .getOne();
+    return user;
+  }
+
   async create(data: ICreateOngDTO): Promise<void> {
     const { id, name, description, email, password, whatsapp, city, uf } = data;
 
@@ -62,11 +85,6 @@ class OngRepository implements IOngRepository {
       ])
       .getMany();
     return ongs; 
-    throw new Error("Method not implemented");
-
-
-
-
   }
 
   async findByEmailAndName(data: IFindByEmailAndName): Promise<Ong> {
