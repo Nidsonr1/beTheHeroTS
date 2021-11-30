@@ -1,15 +1,12 @@
-import "dotenv/config";
-import express from 'express';
+import { app, emmiter } from './app'
 
-import { routes } from "./routes";
-import './database'
-
-
-const app = express();
-app.use(express.json());
-app.use(routes);
-
-app.listen(3333, () => { 
-  console.log("🚀 Server is Running at http://localhost:3333");
+emmiter.on("already", () => {
+  app.listen("3333", () => {
+    console.log("📦 Database connected!")
+    console.log("🚀 Server is Running at http://localhost:3333");
   });
+});
 
+emmiter.on("err", () => {
+  throw new Error("❎ Problema interno de Conexão!")  
+});

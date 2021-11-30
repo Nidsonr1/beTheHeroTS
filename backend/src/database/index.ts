@@ -1,5 +1,7 @@
 import { createConnection, getConnectionOptions } from 'typeorm';
+import { EventEmitter } from 'events'
 
+const emmiter = new EventEmitter();
 
 interface IOptions {
   host: string;
@@ -7,10 +9,14 @@ interface IOptions {
 
 getConnectionOptions().then(options => {
   const newOptions = options as IOptions;
-  newOptions.host = 'database_bethehero'; //Essa opção deverá ser EXATAMENTE o nome dado ao service do banco de dados
+  newOptions.host = 'database_bethehero_1'; //Essa opção deverá ser EXATAMENTE o nome dado ao service do banco de dados
   createConnection({
     ...options,
   }).then(() => { 
-    console.log('🔥 Database connected!');
+    emmiter.emit("already");
+   }).catch(() => {
+     emmiter.emit("err");
    });
 });
+
+export { emmiter }
