@@ -1,14 +1,51 @@
-import { getRepository, Repository } from 'typeorm';
+import { getConnection, getRepository, Repository } from 'typeorm';
 import crypto from 'crypto';
 
 import { Ong } from '../entities/Ong';
-import { ICreateOngDTO, IOngRepository, IFindByEmailAndName } from './interfaces/IOngRepository';
+import { ICreateOngDTO, IOngRepository, IFindByEmailAndName, IEditOngDTO } from './interfaces/IOngRepository';
 
 class OngRepository implements IOngRepository {
   private repository: Repository<Ong>;
   
   constructor() {
     this.repository = getRepository(Ong);
+  }
+
+  async findById(id: string): Promise<Ong> {
+    const ong = await this.repository.findOne({ id });
+    return ong;
+  }
+  
+  async edit(data: IEditOngDTO): Promise<IEditOngDTO> {
+    const { id, name, description, email, whatsapp, city, uf } = data;
+
+    await this.repository.createQueryBuilder("ongs")
+      .update(Ong)
+      .set({
+        name: name,
+        description: description,
+        email: email,
+        whatsapp: whatsapp,
+        city: city,
+        uf: uf
+      })
+      .where({ id })
+      .execute();
+    
+    const ong = await this.repository.createQueryBuilder("ongs")
+      .select([
+        "ongs.id",
+        "ongs.name",
+        "ongs.description",
+        "ongs.email",
+        "whatsapp",
+        "ongs.city",
+        "ongs.uf"
+      ])
+      .where({ id })
+      .getOne();
+
+    return ong;
   }
 
   async findByEmail(email: string): Promise<Ong> {

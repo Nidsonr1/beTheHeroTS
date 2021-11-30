@@ -1,5 +1,16 @@
 import { Ong } from "../../entities/Ong";
 
+
+interface IEditOngDTO {
+  id?: string;
+  name: string;
+  description: string;
+  email: string;
+  whatsapp: string;
+  city: string;
+  uf: string;
+}
+
 interface ICreateOngDTO {
   id?: string;
   name: string;
@@ -30,6 +41,8 @@ interface IOngRepository {
   encryptPassword(password: string, salt: string): Promise<string>;
   login(email: string, password: string, salt: string): Promise<Ong>;
   findByEmail(email: string): Promise<Ong>;
+  edit(data: IEditOngDTO): Promise<IEditOngDTO>;
+  findById(id: string): Promise<Ong>;
 }
 
-export { ICreateOngDTO, IOngRepository, IFindByEmailAndName, IRequestLogin }
+export { ICreateOngDTO, IOngRepository, IFindByEmailAndName, IRequestLogin, IEditOngDTO }
