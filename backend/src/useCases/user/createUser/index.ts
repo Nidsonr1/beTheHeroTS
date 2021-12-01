@@ -1,5 +1,4 @@
-import { UserRepository } from "../../repositories/UserRepository"
-import { CreateOngUseCase } from "../ong/createOng/CreateOngUseCase";
+import { UserRepository } from "../../../repositories/UserRepository"
 import { CreateUserController } from "./CreateUserController";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 

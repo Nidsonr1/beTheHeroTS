@@ -1,4 +1,4 @@
-import { ICreateUser, IUserRepository } from "../../repositories/interfaces/IUserRepository";
+import { ICreateUser, IUserRepository } from "../../../repositories/interfaces/IUserRepository";
 
 class CreateUserUseCase {
   constructor(private userRepository: IUserRepository) {}
@@ -9,7 +9,6 @@ class CreateUserUseCase {
     if(userAlreadyExist) {
       throw new Error ("User already exist");
     }
-
     this.userRepository.create({ name, email, password });
   };
 }
