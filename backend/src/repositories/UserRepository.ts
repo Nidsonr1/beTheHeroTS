@@ -2,7 +2,7 @@ import { getRepository, Repository } from "typeorm";
 import crypto from 'crypto';
 
 import { User } from "../entities/User";
-import { ICreateUser, IUserRepository } from "./interfaces/IUserRepository";
+import { ICreateUser, IUserRepository, IRequestLoginUser } from "./interfaces/IUserRepository";
 
 class UserRepository implements IUserRepository{
   private repository: Repository<User>;
@@ -29,8 +29,19 @@ class UserRepository implements IUserRepository{
     throw new Error("Method not implemented.");
   }
 
-  async login(email: string, password: string): Promise<User> {
-    throw new Error("Method not implemented.");
+  async login(email: string, password: string, salt: string): Promise<IRequestLoginUser> {
+    const decryptPassword = await this.encryptPassword(password, salt);
+
+    const user = await this.repository.createQueryBuilder("users")
+    .select([
+      "users.id",
+      "users.name",
+      "users.email",
+    ])
+    .where({ password: decryptPassword })
+    .getOne();
+
+    return user
   }
 
   async salt(length: number): Promise<string> {
