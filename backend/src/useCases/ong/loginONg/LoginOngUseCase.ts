@@ -1,20 +1,16 @@
+import { IOngRepository } from "repositories/interfaces/IOngRepository";
 import { Ong } from "../../../entities/Ong";
-import { IRequestLogin } from "../../../repositories/interfaces/IOngRepository";
-import { OngRepository } from "../../../repositories/OngRepository";
 
 class LoginOngUseCase {
-  constructor(private ongRepository: OngRepository) {}
+  constructor(private ongRepository: IOngRepository) {}
 
   async execute(email: string, password: string): Promise<Ong> {
     const ongAlreadyExist = await this.ongRepository.findByEmail(email);
-    if(!ongAlreadyExist) {
-      throw new Error("Email does not valid");
-    }
+
+    if(!ongAlreadyExist) throw new Error("Email not registered");
     
     const ong = await this.ongRepository.login(email, password, ongAlreadyExist.salt);
-    if(!ong) {
-      throw new Error("Ong does not exist");
-    }
+    if(!ong) throw new Error("Incorrect password");
     
     return ong;
   }

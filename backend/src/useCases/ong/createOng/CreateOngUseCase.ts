@@ -7,9 +7,8 @@ class CreateOngUseCase{
     const { name, description, email, password, whatsapp, city, uf} = data;
 
     const ongAlreadyExist = await this.ongRepository.findByEmailAndName({name, email});
-    if(ongAlreadyExist) {
-      throw new Error("Ong already Exist");
-    }
+    
+    if(ongAlreadyExist) throw new Error("Ong already Exist");
 
     await this.ongRepository.create({
       name,

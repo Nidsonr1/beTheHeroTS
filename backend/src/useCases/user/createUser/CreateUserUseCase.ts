@@ -6,9 +6,8 @@ class CreateUserUseCase {
   async execute({ name, email, password }: ICreateUser): Promise<void> {
     const userAlreadyExist = await this.userRepository.findByEmail(email);
 
-    if(userAlreadyExist) {
-      throw new Error ("User already exist");
-    }
+    if(userAlreadyExist) throw new Error ("User already exist");
+    
     this.userRepository.create({ name, email, password });
   };
 }

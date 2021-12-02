@@ -7,9 +7,7 @@ class ListOngsUseCase {
   async execute(): Promise<Ong[]> {
     const ongs = await this.ongRepository.list();
 
-    if(ongs.length <= 0) {
-      throw new Error("No ONG Registered");
-    }
+    if(ongs.length <= 0) throw new Error("No ONG Registered");
     
     return ongs;
   }

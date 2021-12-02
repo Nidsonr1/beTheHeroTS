@@ -13,7 +13,14 @@ class LoginOngController {
       const ong = await this.loginOngUseCase.execute(email, password);
       return response.status(200).json(ong);
     } catch (error) {
-      return response.status(404).json({ error: error.message });
+      switch(error.message) {
+        case 'Email not registered':
+          return response.status(404).json({ error: error.message });
+        case 'Incorrect password':
+          return response.status(400).json({ error: error.message });
+        default:
+          return response.status(500).json({ error: "Problema Interno!"});
+      }
     }
    }
 }
